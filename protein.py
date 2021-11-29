@@ -64,8 +64,6 @@ if count_seq=="NO":
 	print("Session ended.")
 	sys.exit()
 
-######Create a list of different species - info taken from the header??
-
 #Ask the user if they want to continue and align the sequences
 #sequences must first be split (seqretsplit???) and then aligned usilng clustalo
 alig_seq=("Would you like to coninue and align the sequences?[Yes/No]").upper()
@@ -75,7 +73,7 @@ if align_seq=="YES":
 	command4='("{0}_esearch.fa".format(details["taxonomic_group"]).split">" > esearch_split.fa)'
 	subprocess.call(command4, shell, True)
 	#clustalo: align multiple sequences
-	command5='clustalo -i esearch_split.fa -o prot_clust.msf -t protein --outfmt msf -v'
+	command5='clustalo -i esearch_split.fa -o prot_clust.msf -t protein --outfmt msf --maxnumseq=1001 --threads=4 -v'
 	subprocess.call(command5, shell=True)
 
 if align_seq=="NO":
@@ -159,18 +157,12 @@ if pred_struc=='NO':
 
 #Ask the user if they want to get aa summary:
 
-aa_plot=("Would you like to save or generate a aa plot?"[Yes/No]).upper()
+aa_plot=("Would you like to save or generate a plot displaying the amino acid properties of your protein? Them graplh will appear on screen.[Yes/No]").upper()
 
-#NB note that the seq is a protein 
 if aa_plot=="YES":
-	print("Would you like to print or saven it?[P/S]).upper()
-	if P:
-		command12='pepinfo {0}_esearch.seq.fa  -sprotein1 -graph x11'
-		subprocess.call(command12, shell=True)
-
-	if S: 
-		command13='pepinfo {0}_esearch.seq.fa  -sprotein1 -graph ps'
-		subprocess.call(command13, shell=True)
+	print("Would you like to print or save it?[P/S]).upper()
+	command12='pepinfo {0}_esearch.seq.fa  -sprotein1 -graph x11'
+	subprocess.call(command12, shell=True)
 
 if aa_plot=="NO":
 	print("Exiting programe")
